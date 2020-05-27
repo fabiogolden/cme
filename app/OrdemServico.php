@@ -4,11 +4,12 @@ namespace App;
 
 use App\User;
 use App\Estoque;
-use App\Veiculo;
+use App\Departamento;
 use App\OrdemServicoStatus;
 use App\MovimentacaoProduto;
 use App\OrdemServicoProduto;
 use App\OrdemServicoServico;
+use App\Atendente;
 use Illuminate\Database\Eloquent\Model;
 
 class OrdemServico extends Model
@@ -16,16 +17,20 @@ class OrdemServico extends Model
     protected $fillable = [
         'estoque_id',
         'data_fechamento',
-        'veiculo_id',
-        'km_veiculo',
+        'departamento_id',
+        'atendente_id',
         'obs', 
         'user_id',
         'valor_total',
         'ordem_servico_status_id'
     ];
 
-    public function veiculo() {
-        return $this->belongsTo(Veiculo::class);
+    public function departamento() {
+        return $this->belongsTo(Departamento::class);
+    }
+
+    public function atendente() {
+        return $this->belongsTo(Atendente::class);
     }
 
     public function user() {

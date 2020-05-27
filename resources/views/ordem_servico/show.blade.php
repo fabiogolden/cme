@@ -12,11 +12,15 @@
                     </div>
                     <div class="float-right" style="margin-left: 25px">
                         <label for="#os_fechada" class="nf-label">status:</label>
-                        <div id="os_fechada">{{ $ordemServico->ordem_servico_status->os_status ?? 'Aberta' }}</div>
+                    <div id="os_fechada">{{ $ordemServico->ordem_servico_status->os_status ?? 'Aberta' }}</div>
                     </div>
                     <div class="float-right" style="margin-left: 25px">
                         <label for="#data_os" class="nf-label">Data Fechamento:</label>
-                        <div id="data_os">{{ ($ordemServico->fechada) ? date_format(date_create($ordemServico->data_fechamento), 'd/m/Y - H:i:s') : '___/___/______ - ___:___:___   ' }}</div>
+                        @php
+                            
+                           
+                        @endphp
+                        <div id="data_fechamento_os">{{ ($ordemServico->fechada) ? date_format(date_create($ordemServico->data_fechamento), 'd/m/Y - H:i:s') : '___/___/______ - ___:___:___   ' }}</div>
                     </div>
                     <div class="float-right" style="margin-left: 25px">
                         <label for="#data_os" class="nf-label">Data Abertura:</label>
@@ -30,27 +34,22 @@
         <div class="col col-sm-5 col-md-5 col-lg-5">
             <div class="card nf-panel">
                 <label for="#cliente" class="nf-label">Cliente:</label>
-                <div id="cliente">{{ $ordemServico->veiculo->cliente_id }} - {{ $ordemServico->veiculo->cliente->nome_razao }}</div>
+                <div id="cliente">{{ $ordemServico->departamento->cliente_id }} - {{ $ordemServico->departamento->cliente->nome_razao }}</div>
             </div>
         </div>
         <div class="col col-sm-3 col-md-3 col-lg-3">
             <div class="card nf-panel">
                 <label for="#departamento" class="nf-label">Departamento:</label>
-                <div id="departamento">{{ isset($ordemServico->veiculo->departamento) ? $ordemServico->veiculo->departamento->departamento : '&nbsp;' }}</div>
+                <div id="departamento">{{ isset($ordemServico->departamento_id) ? $ordemServico->departamento->departamento : '&nbsp;' }}</div>
             </div>
         </div>
-        <div class="col col-sm-2 col-md-2 col-lg-2">
+        <div class="col col-sm-3 col-md-3 col-lg-3">
             <div class="card nf-panel">
-                <label for="#veiculo" class="nf-label">Veículo:</label>
-                <div id="veiculo">{{ $ordemServico->veiculo->placa }}</div>
+                <label for="#departamento" class="nf-label">Departamento:</label>
+                <div id="departamento">{{ isset($ordemServico->atendente_id) ? $ordemServico->atendente->nome_atendente : '&nbsp;' }}</div>
             </div>
         </div>
-        <div class="col col-sm-2 col-md-2 col-lg-2">
-            <div class="card nf-panel">
-                <label for="#km_atual" class="nf-label">Odômetro / Horímetro:</label>
-                <div id="km_atual">{{ $ordemServico->km_veiculo }}</div>
-            </div>
-        </div>
+        
     </div>
     {{--  Serviços  --}}
     <div class="row" align="center">
@@ -260,7 +259,7 @@
             <div class="col col-sm-2 col-md-2 col-lg-2">
             </div>
             <div class="col col-sm-4 col-md-4 col-lg-4" align="center">
-                <strong>{{ $ordemServico->veiculo->cliente->nome_razao }}</strong> 
+                <strong>{{ $ordemServico->departamento->cliente->nome_razao }}</strong> 
             </div>
         </div>
     </div>

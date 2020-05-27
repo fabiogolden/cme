@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Cliente;
+use App\Departamento;
 use App\Estoque;
 use App\Produto;
 use App\Servico;
@@ -11,6 +12,7 @@ use App\Parametro;
 use App\OrdemServico;
 use App\VencimentoProduto;
 use App\OrdemServicoStatus;
+use App\Atendente;
 use App\MovimentacaoProduto;
 use App\OrdemServicoProduto;
 use Illuminate\Http\Request;
@@ -25,7 +27,7 @@ class OrdemServicoController extends Controller
     public $fields = [
         'id' => 'ID',
         'nome_razao' => 'Cliente',
-        'placa' => 'Veículo',
+        
         'name' => 'Usuário',
         'created_at' => ['label' => 'Data', 'type' => 'datetime'],
         'os_status' => 'Status'
@@ -40,21 +42,19 @@ class OrdemServicoController extends Controller
         if (Auth::user()->canListarOrdemServico()) {
             if ($request->searchField) {
                 $ordemServicos = DB::table('ordem_servicos')
-                                ->select('ordem_servicos.*', 'clientes.nome_razao', 'veiculos.placa', 'users.name', 'ordem_servico_status.os_status')
-                                ->leftJoin('veiculos', 'veiculos.id', 'ordem_servicos.veiculo_id')
-                                ->leftJoin('clientes', 'clientes.id', 'veiculos.cliente_id')
-                                ->leftJoin('users', 'users.id', 'ordem_servicos.user_id')
+                                ->select('ordem_servicos.*', 'clientes.nome_razao', 'users.name', 'ordem_servico_status.*')
+                                ->leftJoin('departamentos', 'departamentos.id', 'ordem_servicos.departamento_id') 
+                                ->leftJoin('clientes', 'clientes.id', 'departamentos.cliente_id')                                 ->leftJoin('users', 'users.id', 'ordem_servicos.user_id')
                                 ->leftJoin('ordem_servico_status', 'ordem_servico_status.id', 'ordem_servico_status_id')
                                 ->where('ordem_servicos.id', $request->searchField)
                                 ->orWhere('clientes.nome_razao', 'like', '%'.$request->searchField.'%')
-                                ->orWhere('veiculos.placa', 'like', '%'.$request->searchField.'%')
                                 ->orderBy('id', 'desc')
                                 ->paginate();
             } else {
                 $ordemServicos = DB::table('ordem_servicos')
-                                ->select('ordem_servicos.*', 'clientes.nome_razao', 'veiculos.placa', 'users.name', 'ordem_servico_status.os_status')
-                                ->leftJoin('veiculos', 'veiculos.id', 'ordem_servicos.veiculo_id')
-                                ->leftJoin('clientes', 'clientes.id', 'veiculos.cliente_id')
+                                ->select('ordem_servicos.*', 'clientes.nome_razao', 'users.name', 'ordem_servico_status.os_status')
+                                ->leftJoin('departamentos', 'departamentos.id', 'ordem_servicos.departamento_id') 
+                                ->leftJoin('clientes', 'clientes.id', 'departamentos.cliente_id') 
                                 ->leftJoin('users', 'users.id', 'ordem_servicos.user_id')
                                 ->leftJoin('ordem_servico_status', 'ordem_servico_status.id', 'ordem_servico_status_id')
                                 ->orderBy('id', 'desc')
@@ -80,6 +80,8 @@ class OrdemServicoController extends Controller
     {
         if (Auth::user()->canCadastrarOrdemServico()) {
             $clientes = Cliente::where('ativo', true)->orderBy('nome_razao', 'asc')->get();
+            $departamentos = Departamento::where('ativo', true)->orderBy('departamento', 'asc')->get();
+            $atendentes = Atendente::where('ativo', true)->orderBy('nome_atendente', 'asc')->get();
             $estoques = Estoque::where('ativo', true)->orderBy('estoque', 'asc')->get();
             $servicos = Servico::where('ativo', true)->orderBy('servico', 'asc')->get();
             $produtos = Produto::where('ativo', true)->orderBy('produto_descricao', 'asc')->get();
@@ -88,8 +90,10 @@ class OrdemServicoController extends Controller
             return View('ordem_servico.create', [
                 'clientes' => $clientes,
                 'estoques' => $estoques,
+                'departamentos' => $departamentos,
                 'servicos' => $servicos,
                 'produtos' => $produtos,
+                'atendentes' => $atendentes,
                 'ordemServicoStatus' => $ordemServicoStatus
             ]);
         } else {
@@ -112,8 +116,7 @@ class OrdemServicoController extends Controller
         if (Auth::user()->canCadastrarOrdemServico()) {
             $this->validate($request, [
                 'cliente_id' => 'required',
-                'veiculo_id' => 'required',
-                'km_veiculo' => 'required|numeric|min:0',
+                
                 //'servicos' => 'array|size:1',
             ]);
             try {
@@ -221,12 +224,12 @@ class OrdemServicoController extends Controller
             $servicos = Servico::where('ativo', true)->orderBy('servico', 'asc')->get();
             $produtos = Produto::where('ativo', true)->orderBy('produto_descricao', 'asc')->get(); 
             $estoques = Estoque::where('ativo', true)->orderBy('estoque', 'asc')->get();
-            $veiculos = $ordemServico->veiculo->get();
-            $clientes = $ordemServico->veiculo->cliente->get();
+            $atendentes = $ordemServico->atendente->get();
+            $clientes = $ordemServico->departamento->cliente->get();
             $ordemServicoStatus = OrdemServicoStatus::orderBy('os_status', 'asc')->get();
 
             return View('ordem_servico.edit', [
-                'veiculos' => $veiculos,
+                'atendentes' => $atendentes,
                 'ordemServico' => $ordemServico,
                 'estoques' => $estoques,
                 'servicos' => $servicos,
@@ -251,8 +254,7 @@ class OrdemServicoController extends Controller
         if (Auth::user()->canAlterarOrdemServico()) {
             $this->validate($request, [
                 'cliente_id' => 'required',
-                'veiculo_id' => 'required',
-                'km_veiculo' => 'required|numeric|min:0',
+                
                 //'servicos' => 'array|size:1',
             ]);
             try {

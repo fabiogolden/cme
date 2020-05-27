@@ -16,11 +16,13 @@ class CreateOrdemServicosTable extends Migration
         Schema::create('ordem_servicos', function (Blueprint $table) {
             $table->increments('id');
             $table->boolean('fechada')->default(false);
-            $table->integer('veiculo_id')->unsigned();
-            $table->integer('km_veiculo');
+            $table->integer('departamento_id')->unsigned();
+            $table->decimal('valor_total', 10, 3);
+            $table->integer('atendente_id')->unsigned();
             $table->text('obs')->nullable();
             $table->integer('user_id')->unsigned();
-            $table->foreign('veiculo_id')->references('id')->on('veiculos');
+            $table->foreign('departamento_id')->references('id')->on('departamentos');
+            $table->foreign('atendente_id')->references('id')->on('atendentes');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });

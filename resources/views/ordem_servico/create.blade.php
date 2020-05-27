@@ -29,21 +29,25 @@
                         ],
                         [
                             'type' => 'select',
-                            'field' => 'veiculo_id',
-                            'label' => 'Veiculo',
+                            'field' => 'departamento_id',
+                            'label' => 'Departamento',
                             'required' => true,
-                            'items' => null,
+                            'items' => $departamentos,
                             'inputSize' => 3,
-                            'displayField' => 'placa',
+                            'displayField' => 'departamento',
                             'keyField' => 'id',
                             'liveSearch' => true,
                         ],
                         [
-                            'type' => 'number',
-                            'field' => 'km_veiculo',
-                            'label' => 'KM Atual',
+                            'type' => 'select',
+                            'field' => 'atendente_id',
+                            'label' => 'Funcionario',
                             'required' => true,
-                            'inputSize' => 2
+                            'items' => $atendentes,
+                            'inputSize' => 3,
+                            'displayField' => 'nome_atendente',
+                            'keyField' => 'id',
+                            'liveSearch' => true,
                         ],
                         [
                             'type' => 'select',
@@ -83,6 +87,9 @@
     <script src="{{ mix('js/os.js') }}"></script>
 @endpush
 @push('document-ready')
+
+
+
 var buscarVeiculos = function() {
     var cliente = {};
 

@@ -18,41 +18,49 @@
                             'type' => 'select',
                             'field' => 'cliente_id_readonly',
                             'label' => 'Cliente',
-                            'items' => $ordemServico->veiculo->cliente->get(),
+                            'items' => $ordemServico->departamento->cliente->get(),
                             'inputSize' => 5,
                             'displayField' => 'nome_razao',
                             'keyField' => 'id',
                             'disabled' => true,
-                            'indexSelected' => $ordemServico->veiculo->cliente_id
+                            'indexSelected' => $ordemServico->departamento->cliente_id
                         ],
                         [
                             'type' => 'hidden',
                             'field' => 'cliente_id',
-                            'inputValue' => $ordemServico->veiculo->cliente_id
+                            'inputValue' => $ordemServico->departamento->cliente_id
                         ],
                         [
                             'type' => 'select',
-                            'field' => 'veiculo_id_readonly',
-                            'label' => 'Veiculo',
-                            'items' => $ordemServico->veiculo->get(),
+                            'field' => 'departamento_id_readonly',
+                            'label' => 'Departamento',
+                            'items' => $ordemServico->departamento->get(),
                             'inputSize' => 3,
-                            'displayField' => 'placa',
+                            'displayField' => 'departamento',
                             'keyField' => 'id',
                             'disabled' => true,
-                            'indexSelected' => $ordemServico->veiculo_id
+                            'indexSelected' => $ordemServico->departamento_id
                         ],
                         [
                             'type' => 'hidden',
-                            'field' => 'veiculo_id',
-                            'inputValue' => $ordemServico->veiculo_id
+                            'field' => 'departamento_id',
+                            'inputValue' => $ordemServico->departamento_id
                         ],
                         [
-                            'type' => 'number',
-                            'field' => 'km_veiculo',
-                            'label' => 'KM Atual',
-                            'required' => true,
-                            'inputSize' => 2,
-                            'inputValue' => $ordemServico->km_veiculo
+                            'type' => 'select',
+                            'field' => 'atendente_id_readonly',
+                            'label' => 'Atendente',
+                            'items' => $ordemServico->atendente->get(),
+                            'inputSize' => 3,
+                            'displayField' => 'nome_atendente',
+                            'keyField' => 'id',
+                            'disabled' => true,
+                            'indexSelected' => $ordemServico->atendente_id
+                        ],
+                        [
+                            'type' => 'hidden',
+                            'field' => 'atendente_id',
+                            'inputValue' => $ordemServico->atendente_id
                         ],
                         [
                             'type' => 'select',
