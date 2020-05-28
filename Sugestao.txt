@@ -1,0 +1,3 @@
+na os no item
+alterar valor para Lote e  autoclave 
+campo para tipo de esterilização (termo-instrumental) (quimico)

@@ -45,87 +45,13 @@
         </div>
         <div class="col col-sm-3 col-md-3 col-lg-3">
             <div class="card nf-panel">
-                <label for="#departamento" class="nf-label">Departamento:</label>
+                <label for="#departamento" class="nf-label">Atendente:</label>
                 <div id="departamento">{{ isset($ordemServico->atendente_id) ? $ordemServico->atendente->nome_atendente : '&nbsp;' }}</div>
             </div>
         </div>
         
     </div>
-    {{--  Serviços  --}}
-    <div class="row" align="center">
-        <div class="col col-sm-12 col-md-12 col-lg-12">
-            <div class="card nf-panel">
-                <strong>Serviços</strong> 
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col col-sm-1 col-md-1 col-lg-1">
-            <div class="card nf-panel">
-                ID
-            </div>
-        </div>
-        <div class="col col-sm-7 col-md-7 col-lg-7">
-            <div class="card nf-panel">
-                Serviço
-            </div>
-        </div>
-        <div class="col col-sm-1 col-md-1 col-lg-1">
-            <div class="card nf-panel">
-                Valor
-            </div>
-        </div>
-        <div class="col col-sm-1 col-md-1 col-lg-1">
-            <div class="card nf-panel">
-                Acrés.
-            </div>
-        </div>
-        <div class="col col-sm-1 col-md-1 col-lg-1">
-            <div class="card nf-panel">
-                Desc.
-            </div>
-        </div>
-        <div class="col col-sm-1 col-md-1 col-lg-1">
-            <div class="card nf-panel">
-                Total
-            </div>
-        </div>
-    </div>
-    @foreach($ordemServico->servicos as $servico)
-    <div class="row">
-        <div class="col col-sm-1 col-md-1 col-lg-1">
-            <div class="card nf-panel">
-                <div>{{ $servico->servico_id }}</div>
-            </div>
-        </div>
-        <div class="col col-sm-7 col-md-7 col-lg-7">
-            <div class="card nf-panel">
-                <div>{{ $servico->servico->servico }}</div>
-            </div>
-        </div>
-        <div class="col col-sm-1 col-md-1 col-lg-1">
-            <div class="card nf-panel">
-                <div>{{ $servico->valor_servico }}</div>
-            </div>
-        </div>
-        <div class="col col-sm-1 col-md-1 col-lg-1">
-            <div class="card nf-panel">
-                <div>{{ $servico->valor_acrescimo }}</div>
-            </div>
-        </div>
-        <div class="col col-sm-1 col-md-1 col-lg-1">
-            <div class="card nf-panel">
-                <div>{{ $servico->valor_desconto }}</div>
-            </div>
-        </div>
-        <div class="col col-sm-1 col-md-1 col-lg-1">
-            <div class="card nf-panel">
-                <div>{{ $servico->valor_cobrado }}</div>
-            </div>
-        </div>
-    </div>
-    @endforeach
-    {{--  Produtos  --}}
+        {{--  Produtos  --}}
     <div class="row" align="center">
         <div class="col col-sm-12 col-md-12 col-lg-12">
             <div class="card nf-panel">
