@@ -18,7 +18,7 @@ class AlterOrdemServicoProdutoAddLote extends Migration
             $table->string('lote') // Nome da coluna
                     ->nullable() ;// Preenchimento não obrigatório
                     
-            $table->string('nautoclave') // Nome da coluna
+            $table->string('autoclave') // Nome da coluna
                     ->nullable(); // Preenchimento não obrigatório
                    // ->after('password'); // Ordenado após a coluna "password"
         });
