@@ -20,10 +20,10 @@ class ProdutoController extends Controller
     protected $fields = array(
         'id' => 'ID',
         'produto_descricao' => 'Descrição',
-        'produto_desc_red' => 'Descrição Reduzida',
+        //'produto_desc_red' => 'Descrição Reduzida',
         'unidade' => 'Unidade',
         'grupo_produto' => 'Grupo',
-        'valor_custo' => [
+        /*'valor_custo' => [
             'label' => 'Preço de Custo',
             'type' => 'decimal',
             'decimais' => 3
@@ -33,6 +33,7 @@ class ProdutoController extends Controller
             'type' => 'decimal',
             'decimais' => 3
         ],
+        */
         'ativo' => ['label' => 'Ativo', 'type' => 'bool']
     );
 
@@ -99,7 +100,6 @@ class ProdutoController extends Controller
         if (Auth::user()->canCadastrarProduto()) {
             $this->validate($request, [
                 'produto_descricao' => 'required|string|min:3|max:60|unique:produtos',
-                'produto_desc_red' => 'nullable|string|min:3|max:10',
                 'unidade_id' => 'required',
                 'grupo_produto_id' => 'required',
             ]);
@@ -107,6 +107,13 @@ class ProdutoController extends Controller
             try {
                 DB::beginTransaction();
                 $produto = new Produto($request->all());
+                $produto->produto_desc_red = '';
+                $produto->valor_custo = '0';
+                $produto->valor_venda = '0';
+                $produto->controla_vencimento = '0';
+                $produto->vencimento_dias = '0';
+                $produto->vencimento_horas_trabalhadas = '0';
+                $produto->codigo_barras = '';
 
                 if ($produto->save()) {
                     $produto->fornecedores()->sync($request->fornecedores);

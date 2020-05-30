@@ -7,7 +7,8 @@
         'model' => 'ordem_servico',
         'tableTitle' => 'Ordens de Serviço',
         'displayField' => 'id',
-        'actions' => [['action' => 'show', 'target' => '_blank'], 'edit', 'destroy']
+        'actions' => [['action' => 'show', 'target' => '_blank'], 'edit', 'destroy'],
+        'searchParms' => 'ordem_servico.search_params'
         ]);
     @endcomponent
 @endsection

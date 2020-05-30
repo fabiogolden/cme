@@ -11,12 +11,12 @@
 </template> 
 
 <script>
-import ordemServicoServico from './OsServicoComponent.vue';
+//import ordemServicoServico from './OsServicoComponent.vue';
 import ordemServicoProduto from './OsProdutoComponent.vue';
 export default {
     name: 'ordem-servico',
     components: {
-        ordemServicoServico,
+        
         ordemServicoProduto
     },
     props: [

@@ -37,12 +37,7 @@
                             </transition>
                         </div>
                     </div>
-                    <div class="card bg-light text-dark">
-                        <div class="card-header">Movimentação de Combustíveis (Últimos 15 dias)</div>
-                        <div class="card-body">
-                            <mov-tanque></mov-tanque>
-                        </div>
-                    </div>
+                    
                 </div>
                 <div class="col-md-6">
                     <div class="card bg-light text-dark">
@@ -135,7 +130,7 @@ import OsEmAberto from './dashboard/OsEmAberto';
 
 export default {
     components: {
-        "mov-tanque": MovTanque,
+        
         "ultimas-entradas-comb": UltimasEntradasComb,
         "card-info": CardInfo,
         "os-em-aberto": OsEmAberto

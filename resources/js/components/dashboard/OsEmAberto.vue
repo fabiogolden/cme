@@ -4,7 +4,7 @@
 			<thead class="thead-light">
 				<tr class="row m-0">
 					<th class="col-2">OS</th>
-					<th class="col-3">Veículo</th>
+					<th class="col-3">Departamento</th>
 					<th class="col-3">Usuário</th>
 					<th class="col-3">Dias em aberto</th>
 					<th class="col-1"></th>
@@ -13,7 +13,7 @@
 			<tbody name="fade" is="transition-group">
 				<tr class="row m-0" v-for="(os, index) in oss" :key="index">
 					<td class="col-2 pool-right">{{ os.id }}</td>
-					<td class="col-3 text-right">{{ os.veiculo }}</td>
+					<td class="col-3 text-right">{{ os.departamento }}</td>
 					<td class="col-3 text-right">{{ os.usuario }}</td>
 					<td class="col-3 text-right">{{ os.dias_em_aberto }}</td>
 					<td class="col-1 text-right">

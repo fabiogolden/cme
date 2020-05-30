@@ -75,26 +75,17 @@
                 Qtd
             </div>
         </div>
-        <div class="col col-sm-1 col-md-1 col-lg-1">
+        <div class="col col-sm-1 col-md-1 col-lg-2">
             <div class="card nf-panel">
-                Vlr. Un.
+                Lote
             </div>
         </div>
-        <div class="col col-sm-1 col-md-1 col-lg-1">
+        <div class="col col-sm-1 col-md-1 col-lg-2">
             <div class="card nf-panel">
-                Acrés.
+                Autoclave
             </div>
         </div>
-        <div class="col col-sm-1 col-md-1 col-lg-1">
-            <div class="card nf-panel">
-                Desc.
-            </div>
-        </div>
-        <div class="col col-sm-1 col-md-1 col-lg-1">
-            <div class="card nf-panel">
-                Total
-            </div>
-        </div>
+        
     </div>
     @foreach($ordemServico->produtos as $item)
     <div class="row">
@@ -113,40 +104,24 @@
                 <div>{{ $item->quantidade }}</div>
             </div>
         </div>
-        <div class="col col-sm-1 col-md-1 col-lg-1">
+        <div class="col col-sm-1 col-md-1 col-lg-2">
             <div class="card nf-panel">
-                <div>{{ $item->valor_produto }}</div>
+                <div>{{ $item->lote }}</div>
             </div>
         </div>
-        <div class="col col-sm-1 col-md-1 col-lg-1">
+        <div class="col col-sm-1 col-md-1 col-lg-2">
             <div class="card nf-panel">
-                <div>{{ $item->valor_acrescimo }}</div>
+                <div>{{ $item->autoclave }}</div>
             </div>
         </div>
-        <div class="col col-sm-1 col-md-1 col-lg-1">
-            <div class="card nf-panel">
-                <div>{{ $item->valor_desconto }}</div>
-            </div>
-        </div>
-        <div class="col col-sm-1 col-md-1 col-lg-1">
-            <div class="card nf-panel">
-                <div>{{ $item->valor_cobrado }}</div>
-            </div>
-        </div>
+        
     </div>
     @endforeach
     <div class="row">
         <div class="col col-sm-10 col-md-10 col-lg-10">
             
         </div>
-        <div class="col col-sm-2 col-md-2 col-lg-2">
-            <div class="card nf-panel clearfix">
-                <div class="pull-right">
-                    <label for="#data_os" class="nf-label">Valor Total:</label>
-                    <div id="data_os">{{ $ordemServico->valor_total }}</div>
-                </div>
-            </div>
-        </div>
+        
     </div>
     <div class="row">
         <div class="col col-sm-12 col-md-12 col-lg-12">

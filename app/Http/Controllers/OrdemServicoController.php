@@ -26,7 +26,8 @@ class OrdemServicoController extends Controller
 {
     public $fields = [
         'id' => 'ID',
-        'nome_razao' => 'Cliente',
+        //'nome_razao' => 'Cliente',
+        'departamento' => 'Departamento',
         
         'name' => 'Usuário',
         'created_at' => ['label' => 'Data', 'type' => 'datetime'],
@@ -39,25 +40,41 @@ class OrdemServicoController extends Controller
      */
     public function index(Request $request)
     {
+        $data_inicial = $request->data_inicial;
+        $data_final = $request->data_final;
+
+        if($data_inicial && $data_final) {
+            $whereData = 'ordem_servicos.created_at between \''.date_format(date_create_from_format('d/m/Y H:i:s', $data_inicial.'00:00:00'), 'Y-m-d H:i:s').'\' and \''.date_format(date_create_from_format('d/m/Y H:i:s', $data_final.'23:59:59'), 'Y-m-d H:i:s').'\'';
+        } elseif ($data_inicial) {
+            $whereData = 'ordem_servicos.created_at >= \''.date_format(date_create_from_format('d/m/Y H:i:s', $data_inicial.'00:00:00'), 'Y-m-d H:i:s').'\'';
+        } elseif ($data_final) {
+            $whereData = 'ordem_servicos.created_at <= \''.date_format(date_create_from_format('d/m/Y H:i:s', $data_final.'23:59:59'), 'Y-m-d H:i:s').'\'';
+        } else {
+            $whereData = '1 = 1'; //busca qualquer coisa
+        }
+        
         if (Auth::user()->canListarOrdemServico()) {
             if ($request->searchField) {
                 $ordemServicos = DB::table('ordem_servicos')
-                                ->select('ordem_servicos.*', 'clientes.nome_razao', 'users.name', 'ordem_servico_status.*')
+                                ->select('ordem_servicos.*', 'clientes.nome_razao', 'users.name', 'ordem_servico_status.*','departamentos.departamento')
                                 ->leftJoin('departamentos', 'departamentos.id', 'ordem_servicos.departamento_id') 
                                 ->leftJoin('clientes', 'clientes.id', 'departamentos.cliente_id')                                 ->leftJoin('users', 'users.id', 'ordem_servicos.user_id')
                                 ->leftJoin('ordem_servico_status', 'ordem_servico_status.id', 'ordem_servico_status_id')
                                 ->where('ordem_servicos.id', $request->searchField)
+                                ->whereRaw($whereData)
                                 ->orWhere('clientes.nome_razao', 'like', '%'.$request->searchField.'%')
-                                ->orderBy('id', 'desc')
+                                ->where('departamentos.departamento', 'like', '%'.$request->searchField.'%')
+                                ->orderBy('ordem_servicos.id', 'desc')
                                 ->paginate();
             } else {
                 $ordemServicos = DB::table('ordem_servicos')
-                                ->select('ordem_servicos.*', 'clientes.nome_razao', 'users.name', 'ordem_servico_status.os_status')
+                                ->select('ordem_servicos.*', 'clientes.nome_razao', 'users.name', 'ordem_servico_status.os_status','departamentos.departamento')
                                 ->leftJoin('departamentos', 'departamentos.id', 'ordem_servicos.departamento_id') 
                                 ->leftJoin('clientes', 'clientes.id', 'departamentos.cliente_id') 
                                 ->leftJoin('users', 'users.id', 'ordem_servicos.user_id')
                                 ->leftJoin('ordem_servico_status', 'ordem_servico_status.id', 'ordem_servico_status_id')
-                                ->orderBy('id', 'desc')
+                                ->whereRaw($whereData)
+                                ->orderBy('ordem_servicos.id', 'desc')
                                 ->paginate();
             }
 
@@ -125,7 +142,7 @@ class OrdemServicoController extends Controller
 
                 $ordemServico = Auth::user()->ordem_servico()->create($request->all());
 
-                //dd($request->all());
+               //dd($request->all());
 
                 $osStatus = OrdemServicoStatus::find($request->ordem_servico_status_id);
                 if (!$osStatus->em_aberto) {
@@ -136,12 +153,18 @@ class OrdemServicoController extends Controller
                     $ordemServico->servicos()->createMany($request->servicos);
                 }
 
+               
                 if (is_array($request->produtos)) {
+
+                    
                     $ordemServico->produtos()->createMany($request->produtos);
+                    
                 
                     /* baixa produtos vencidos que foram trocados */
-                    //dd($request->produtos);
+                    //dd($request->all);
                     foreach ($request->produtos as $produto) {
+                        
+                        
                         if ($produto['produto_vencimento_id']) {
                             $vencimentoProduto = VencimentoProduto::find($produto['produto_vencimento_id']);
                             if ($vencimentoProduto) {

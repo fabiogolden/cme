@@ -25,13 +25,7 @@
                             'autofocus' => true,
                             'inputSize' => 6
                         ],
-                        [
-                            'type' => 'text',
-                            'field' => 'produto_desc_red',
-                            'label' => 'Descrição Reduzida',
-                            'inputSize' => 2,
-                            'maxLength' => 10
-                        ],
+                        
                         [
                             'type' => 'select',
                             'field' => 'grupo_produto_id',
@@ -60,70 +54,16 @@
                             'liveSearch' => true,
                         ],
                         [
-                            'type' => 'number',
-                            'field' => 'valor_custo',
-                            'label' => 'Preço de Custo',
-                            'inputSize' => 4
-                        ],
-                        [
-                            'type' => 'number',
-                            'field' => 'valor_venda',
-                            'label' => 'Preço de Venda',
-                            'inputSize' => 4
-                        ]
-                    ]
-                ])
-                @endcomponent
-                @component('components.form-group', [
-                    'inputs' => [
-                        [
-                            'type' => 'select',
-                            'field' => 'controla_vencimento',
-                            'label' => 'Controla Vencimento',
-                            'inputSize' => 3,
-                            'items' => Array('Não', 'Sim'),
-                        ],  
-                        [
-                            'type' => 'number',
-                            'field' => 'vencimento_dias',
-                            'label' => 'Vencimento em Dias',
-                            'readOnly' => true,
-                            'inputSize' => 3
-                        ],
-                        [
-                            'type' => 'number',
-                            'field' => 'vencimento_km',
-                            'label' => 'Vencimento em Km',
-                            'readOnly' => true,
-                            'inputSize' => 3
-                        ],
-                        [
-                            'type' => 'number',
-                            'field' => 'vencimento_horas_trabalhadas',
-                            'label' => 'Vencimento em Horas/Trabalhadas',
-                            'readOnly' => true,
-                            'inputSize' => 3
-                        ]
-                    ]
-                ])
-                @endcomponent
-                @component('components.form-group', [
-                    'inputs' => [
-                        [
                             'type' => 'text',
                             'field' => 'numero_serie',
                             'label' => 'Número de Série',
                             'inputSize' => 6
-                        ],
-                        [
-                            'type' => 'text',
-                            'field' => 'codigo_barras',
-                            'label' => 'Código de Barras',
-                            'inputSize' => 6
                         ]
                     ]
                 ])
                 @endcomponent
+               
+                
                 <div class="row">
                     <div class="col-md-4">
                         @component('components.input-checklist-group', [
@@ -135,7 +75,7 @@
                         ])
                         @endcomponent
                     </div>
-                    <div class="col-md-8" id="estoque-produto-component">
+                    <div class="col-md-6" id="estoque-produto-component">
                         {{--  @component('components.input-checklist-group', [
                             'items' => $estoques,
                             'label' => 'estoque',

@@ -3,7 +3,7 @@
         <div class="row">
             <input type="hidden" name="estoque_id" v-model="estoque_id">
             <input type="hidden" name="valor_total" v-model="valor_total">
-            <div v-bind:class="{'col-md-7': true, ' has-error': this.errors.estoqueId}">
+            <div v-bind:class="{'col-md-4': true, ' has-error': this.errors.estoqueId}">
                 <label for="estoqueId" class="control-label">Estoque</label>
                 <select data-style="btn-secondary" data-title="Nada Selecionado" ref="estoqueId" v-model="estoqueId" data-live-search="true" class="form-control selectpicker" name="estoqueId" id="estoqueId" :disabled="produtosSelecionados.length > 0">
                     <!-- <option selected value=""> Nada Selecionado </option> -->
@@ -23,12 +23,10 @@
                     <thead class="thead-light">
                         <tr class="row m-0">
                             <th class="col-md-1">Id</th>
-                            <th class="col-md-5">Produto</th>
+                            <th class="col-md-3">Produto</th>
                             <th class="col-md-1">Qtd</th>
-                            <th class="col-md-1">R$ Un.</th>
-                            <th class="col-md-1">R$ Acrés.</th>
-                            <th class="col-md-1">R$ Desc.</th>
-                            <th class="col-md-1">R$ Final</th>
+                            <th class="col-md-1">Lote</th>
+                            <th class="col-md-1">Autoclave</th>
                             <th class="col-md-1">Ações</th>
                         </tr>
                     </thead>
@@ -39,7 +37,7 @@
                                 <input type="hidden" :name="'produtos['+index+'][produto_id]'" :value="item.id">
                                 <input type="hidden" :name="'produtos['+index+'][produto_vencimento_id]'" :value="item.produto_vencimento_id">
                             </td>
-                            <td class="col-md-5">
+                            <td class="col-md-3">
                                 {{ item.produto_descricao }}
                             </td>
                             <td class="col-md-1 text-right">
@@ -47,21 +45,15 @@
                                 <input type="hidden" :name="'produtos['+index+'][quantidade]'" :value="item.quantidade">    
                             </td>
                             <td class="col-md-1 text-right">
-                                {{ item.valor_produto | toDecimal3 }}
-                                <input type="hidden" :name="'produtos['+index+'][valor_produto]'" :value="item.valor_produto">    
+                                {{ item.lote }}
+                                <input type="hidden" :name="'produtos['+index+'][lote]'" :value="item.lote">    
                             </td>
                             <td class="col-md-1 text-right">
-                                {{ item.valor_desconto | toDecimal3 }}
-                                <input type="hidden" :name="'produtos['+index+'][valor_desconto]'" :value="item.valor_desconto">    
+                                {{ item.autoclave  }}
+                                <input type="hidden" :name="'produtos['+index+'][autoclave]'" :value="item.autoclave">    
                             </td>
-                            <td class="col-md-1 text-right">
-                                {{ item.valor_acrescimo | toDecimal3 }}
-                                <input type="hidden" :name="'produtos['+index+'][valor_acrescimo]'" :value="item.valor_acrescimo">    
-                            </td>
-                            <td class="col-md-1 text-right">
-                                {{ item.valor_cobrado | toDecimal3 }}
-                                <input type="hidden" :name="'produtos['+index+'][valor_cobrado]'" :value="item.valor_cobrado">    
-                            </td>    
+                            
+                           
                             <td class="col-md-1">
                                 <button type="button" class="btn btn-sm btn-warning" @click="editItem(index)" v-show="!editing">
                                     <i class="fas fa-edit"></i>
@@ -75,12 +67,12 @@
                     <tfoot v-if="this.produtos.length > 0">
                         <tr class="row m-0">
                             <td class="col-md-1"><strong>{{ this.produtos.length }}</strong></td>
-                            <td class="col-md-5"></td>
+                            <td class="col-md-3"></td>
                             <td class="col-md-1 text-right"><strong>{{ this.totalQuantidade() | toDecimal3 }}</strong></td>
                             <td class="col-md-1 text-right"><strong>{{ this.totalValor() | toDecimal3 }}</strong></td>
                             <td class="col-md-1 text-right"><strong>{{ this.totalDesconto() | toDecimal3 }}</strong></td>
-                            <td class="col-md-1 text-right"><strong>{{ this.totalAcrescimo() | toDecimal3 }}</strong></td>
-                            <td class="col-md-1 text-right"><strong>{{ this.totalCobrado() | toDecimal3 }}</strong></td>
+                            <td class="col-md-1 text-right"><strong>{{ this.totalAcrescimo() }}</strong></td>
+                            
                             <td class="col-md-2"></td>
                         </tr>
                     </tfoot>
@@ -88,7 +80,7 @@
             </div>
             <div>
                 <div class="row m-0">
-                    <div v-bind:class="{'col-md-6': true, ' has-error': this.errors.inputProdutos}" style="padding-right: 0 !important; padding-left: 0 !important;">
+                    <div v-bind:class="{'col-md-4': true, ' has-error': this.errors.inputProdutos}" style="padding-right: 0 !important; padding-left: 0 !important;">
                         <select data-style="btn-secondary" :disabled="((estoqueId == 'false') || (estoqueId == null))" ref="inputProdutos" v-model="produto_id" data-live-search="true" class="form-control selectpicker" name="inputProdutos" id="inputProdutos">
                             <option selected value="false">Produto</option>
                             <option v-for="(produto, index) in produtosDisponiveisOrdenados" :value="produto.id" :key="index">{{ produto.id + ' - ' + produto.produto_descricao }}</option>
@@ -109,30 +101,20 @@
                             <strong>{{ this.errors.inputQuantidadeMsg }}</strong>
                         </span>
                     </div>
-                    <div v-bind:class="{'col-md-1': true, ' has-error': this.errors.inputValorUnitario}" style="padding-right: 0 !important; padding-left: 0 !important;">
-                        <input :disabled="((estoqueId == 'false') || (estoqueId == null))" type="number" min="0,000" max="9999999999,999" step="any" ref="inputValorUnitario" v-model.number="valor_unitario" class="form-control" name="inputValorUnitario" id="inputValorUnitario" readonly>
-                        <span class="help-block" :v-if="this.errors.inputValorUnitario">
-                            <strong>{{ this.errors.inputValorUnitarioMsg }}</strong>
+                    <div v-bind:class="{'col-md-1': true, ' has-error': this.errors.inputLote}" style="padding-right: 0 !important; padding-left: 0 !important;">
+                        <input :disabled="((estoqueId == 'false') || (estoqueId == null))" type="text" min="0" max="9999999999" step="any" ref="inputLote" v-model.text="lote" class="form-control" name="inputLote" id="inputLote">
+                        <span class="help-block" :v-if="this.errors.inputLote">
+                            <strong>{{ this.errors.inputLoteMsg }}</strong>
                         </span>
                     </div>
-                    <div v-bind:class="{'col-md-1': true, ' has-error': this.errors.inputAcrescimo}" style="padding-right: 0 !important; padding-left: 0 !important;">
-                        <input :disabled="((estoqueId == 'false') || (estoqueId == null))" type="number" min="0,000" max="9999999999,999" step="any" ref="inputAcrescimo" v-model.number="valor_acrescimo" class="form-control" name="inputAcrescimo" id="inputAcrescimo">
-                        <span class="help-block" :v-if="this.errors.inputAcrescimo">
-                            <strong>{{ this.errors.inputAcrescimoMsg }}</strong>
+                    
+                    <div v-bind:class="{'col-md-1': true, ' has-error': this.errors.inputAutoclave}" style="padding-right: 0 !important; padding-left: 0 !important;">
+                        <input :disabled="((estoqueId == 'false') || (estoqueId == null))" type="text" min="0" max="9999999999" step="any" ref="inputAutoclave" v-model.text="autoclave" class="form-control" name="inputAutoclave" id="inputAutoclave">
+                        <span class="help-block" :v-if="this.errors.inputAutoclave">
+                            <strong>{{ this.errors.inputAutoclaveMsg }}</strong>
                         </span>
                     </div>
-                    <div v-bind:class="{'col-md-1': true, ' has-error': this.errors.inputDesconto}" style="padding-right: 0 !important; padding-left: 0 !important;">
-                        <input :disabled="((estoqueId == 'false') || (estoqueId == null))" type="number" min="0,000" max="9999999999,999" step="any" ref="inputDesconto" v-model.number="valor_desconto" class="form-control" name="inputDesconto" id="inputDesconto">
-                        <span class="help-block" :v-if="this.errors.inputDesconto">
-                            <strong>{{ this.errors.inputDescontoMsg }}</strong>
-                        </span>
-                    </div>
-                    <div v-bind:class="{'col-md-1': true, ' has-error': this.errors.inputValorCobrado}" style="padding-right: 0 !important; padding-left: 0 !important;">
-                        <input :disabled="((estoqueId == 'false') || (estoqueId == null))" type="number" min="0,000" max="9999999999,999" step="any" ref="inputValorCobrado" v-model.number="valor_cobrado" class="form-control" name="inputValorCobrado" id="inputValorCobrado" readonly>
-                        <span class="help-block" :v-if="this.errors.inputValorCobrado">
-                            <strong>{{ this.errors.inputValorCobradoMsg }}</strong>
-                        </span>
-                    </div>
+                    
                     <div class="col-md-1">
                         <button :disabled="((estoqueId == 'false') || (estoqueId == null))" type="button" class="btn btn-success" @click="addProduto" v-show="!editing">
                             <i class="fas fa-plus"></i>
@@ -171,10 +153,10 @@
                 produto_vencimento_id: null,
                 veiculo_element: null,
                 quantidade: 1,
-                valor_desconto: 0,
+                autoclave: 0,
                 valor_acrescimo: 0,
                 valor_cobrado: 0,
-                valor_unitario: 0,
+                lote: 0,
                 isModalVisible: false,
                 deleteIndex: false,
                 produtosDisponiveis: [],
@@ -186,10 +168,10 @@
                     inputProdutosMsg: '',
                     inputQuantidade: false,
                     inputQuantidadeMsg: '',
-                    inputValorUnitario: false,
-                    inputValorUnitariodeMsg: '',
-                    inputDesconto: false,
-                    inputDescontoMsg: '',
+                    inputLote: true,
+                    inputLoteMsg: '',
+                    inputAutoclave: false,
+                    inputAutoclaveMsg: '',
                     inputAcrescimo: false,
                     inputAcrescimoMsg: '',
                     estoqueId: false,
@@ -232,7 +214,7 @@
             },
             produto_id: function() {
                 if (!this.editing) {
-                    this.valor_unitario = this.getProdutoById(this.produto_id).valor_venda;
+                    this.lote = this.getProdutoById(this.produto_id).lote;
                 }
                 this.calcTotalProdutoItem();
             }
@@ -256,9 +238,7 @@
             valor_total: {
                 get() {
                     let total = 0;
-                    for (var i = 0; i < this.produtos.length; i++) {
-                        total += ((parseFloat(this.produtos[i].valor_produto) + parseFloat(this.produtos[i].valor_acrescimo))-parseFloat(this.produtos[i].valor_desconto))*this.produtos[i].quantidade;
-                    }
+                   
                     return parseFloat(total);
                 }
             },
@@ -283,9 +263,7 @@
         methods: {
             getValorTotal() {
                 let total = 0;
-                for (var i = 0; i < this.produtos.length; i++) {
-                    total += ((parseFloat(this.produtos[i].valor_produto) + parseFloat(this.produtos[i].valor_acrescimo))-parseFloat(this.produtos[i].valor_desconto))*this.produtos[i].quantidade;
-                }
+               
                 return parseFloat(total);
             },
             getProdutos() {
@@ -309,10 +287,12 @@
                             'id': this.oldData[i].produto_id,
                             'produto_descricao': this.getProdutoById(this.oldData[i].produto_id).produto_descricao,
                             'quantidade': Number(this.oldData[i].quantidade),
-                            'valor_produto': Number(this.oldData[i].valor_produto),
+                            'valor_produto': Number(0),
                             'valor_desconto': Number(this.oldData[i].valor_desconto),
                             'valor_acrescimo': Number(this.oldData[i].valor_acrescimo),
-                            'valor_cobrado': Number(this.oldData[i].valor_cobrado)
+                            'valor_cobrado': Number(0),
+                            'lote' : this.oldData[i].lote,
+                            'autoclave' : this.oldData[i].autoclave
                         });
                         this.incluirProduto(this.oldData[i].produto_id);
                     }
@@ -357,13 +337,13 @@
                     }
                 }
 
-                if ((this.valor_unitario == '') || (this.valor_unitario <= 0)) {
-                    this.errors.inputValorUnitario = true;
-                    this.errors.inputValorUnitarioMsg = 'Informe o Valor Unitário do produto.';
+                if (this.lote == '') {
+                    this.errors.inputLote = false;
+                    this.errors.inputLoteMsg = 'Informe o Lote.';
                     return false;
                 } else {
-                    this.errors.inputValorUnitario = false;
-                    this.errors.inputValorUnitarioMsg = '';
+                    this.errors.inputLote = false;
+                    this.errors.inputLoteMsg = '';
                 }
                 return true;
             },
@@ -386,10 +366,13 @@
                         'produto_vencimento_id': this.produto_vencimento_id,
                         'produto_descricao': this.getProdutoById(this.produto_id).produto_descricao+this.getProdutoVencimentoDesc(this.produto_vencimento_id),
                         'quantidade': Number(this.quantidade),
-                        'valor_produto': Number(this.getProdutoById(this.produto_id).valor_venda),
+                        'valor_produto': Number(0),
                         'valor_desconto': Number(this.valor_desconto),
                         'valor_acrescimo': Number(this.valor_acrescimo),
-                        'valor_cobrado': Number(this.valor_cobrado)
+                        'valor_cobrado': Number(0),
+                        'lote' : this.lote,
+                        'autoclave' : this.autoclave
+
                     });
                     this.incluirProduto(this.produto_id);
                     this.limparFormulario();
@@ -401,9 +384,10 @@
                 let item = this.produtos[index];
                 this.produto_id = item.id;
                 this.quantidade = Number(item.quantidade);
-                this.valor_unitario = Number(item.valor_produto);
+                this.lote = item.lote;
                 this.valor_desconto = Number(item.valor_desconto);
                 this.valor_acrescimo = Number(item.valor_acrescimo);
+                this.autoclave = item.autoclave;
                 this.produtosDisponiveis.push(item);
             },
             updateProduto() {
@@ -412,10 +396,11 @@
                     'produto_vencimento_id': this.produto_vencimento_id,
                     'produto_descricao': this.getProdutoById(this.produto_id).produto_descricao+this.getProdutoVencimentoDesc(this.produto_vencimento_id),
                     'quantidade': Number(this.quantidade),
-                    'valor_produto': Number(this.valor_unitario),
+                    'lote': this.lote,
                     'valor_desconto': Number(this.valor_desconto),
                     'valor_acrescimo': Number(this.valor_acrescimo),
-                    'valor_cobrado': Number(this.valor_cobrado)
+                    'valor_cobrado': Number(0),
+                    'autoclave' : this.autoclave
                 };
 
                 this.editing = false;
@@ -441,10 +426,11 @@
                 this.produto_id = false;
                 this.produtoSelecionado = false;
                 this.quantidade = 1;
-                this.valor_unitario = 0.000;
+                this.lote = 0;
                 this.valor_desconto = 0.000;
                 this.valor_acrescimo = 0.000;
                 this.valor_cobrado = 0.000;
+                this.autoclave = 0;
                 this.$refs.inputProdutos.focus();
             },
             totalQuantidade() {
@@ -456,30 +442,22 @@
             },
             totalValor() {
                 let result = 0;
-                for (var i=0; i<this.produtos.length; i++) {  
-                    result += this.produtos[i].valor_produto;
-                }
+               
                 return result;
             },
             totalDesconto() {
                 let result = 0;
-                for (var i=0; i<this.produtos.length; i++) {  
-                    result += this.produtos[i].valor_desconto;
-                }
+                
                 return result;
             },
             totalAcrescimo() {
                 let result = 0;
-                for (var i=0; i<this.produtos.length; i++) {  
-                    result += this.produtos[i].valor_acrescimo;
-                }
+               
                 return result;
             },
             totalCobrado() {
                 let result = 0;
-                for (var i=0; i<this.produtos.length; i++) {  
-                    result += this.produtos[i].valor_cobrado;
-                }
+          
                 return result;
             },
             getProdutoById(id) {
@@ -545,10 +523,7 @@
             },
             calcTotalProdutoItem() {
                 //console.log('entrou no valor cobrado');
-                this.valor_cobrado = ((parseFloat((isNaN(this.valor_unitario) || (this.valor_unitario == '')) ? 0 : this.valor_unitario) +
-                                      parseFloat((isNaN(this.valor_acrescimo) || (this.valor_acrescimo == '')) ? 0 : this.valor_acrescimo)) - 
-                                      parseFloat((isNaN(this.valor_desconto) || (this.valor_desconto == '')) ? 0 : this.valor_desconto)) *
-                                      parseFloat((isNaN(this.quantidade) || (this.quantidade == '')) ? 1 : this.quantidade);
+                this.valor_cobrado = 0;
             },
             obterListagemProdutosVencimento() {
                 console.log(this.veiculo_id);

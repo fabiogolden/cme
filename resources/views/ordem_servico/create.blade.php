@@ -25,7 +25,7 @@
                             'displayField' => 'nome_razao',
                             'keyField' => 'id',
                             'liveSearch' => true,
-                            'defaultNone' => true
+                            //'defaultNone' => true
                         ],
                         [
                             'type' => 'select',
@@ -37,7 +37,13 @@
                             'displayField' => 'departamento',
                             'keyField' => 'id',
                             'liveSearch' => true,
-                        ],
+                        ]
+                    ]
+                ])
+                @endcomponent
+                @component('components.form-group', [
+                    'inputs' => [
+                        
                         [
                             'type' => 'select',
                             'field' => 'atendente_id',
@@ -62,8 +68,6 @@
                 ])
                 @endcomponent
                 <ordem-servico 
-                    :servicos-data="{{ json_encode($servicos) }}" 
-                    :old-servicos-data="{{ json_encode(old('servicos')) }}"
                     v-bind:estoques="{{ json_encode($estoques) }}" 
                     :old-estoque-id="{{ json_encode(old('estoque_id')) }}"
                     :old-produtos-data="{{ json_encode(old('produtos')) }}">

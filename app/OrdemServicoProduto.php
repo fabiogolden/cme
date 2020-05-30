@@ -17,7 +17,9 @@ class OrdemServicoProduto extends Model
         'valor_produto',
         'valor_desconto',
         'valor_acrescimo',
-        'valor_cobrado'
+        'valor_cobrado',
+        'lote',
+        'autoclave'
     ];
 
     public function ordem_servico() {
