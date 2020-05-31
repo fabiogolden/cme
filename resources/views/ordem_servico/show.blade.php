@@ -45,8 +45,8 @@
         </div>
         <div class="col col-sm-3 col-md-3 col-lg-3">
             <div class="card nf-panel">
-                <label for="#departamento" class="nf-label">Atendente:</label>
-                <div id="departamento">{{ isset($ordemServico->atendente_id) ? $ordemServico->atendente->nome_atendente : '&nbsp;' }}</div>
+                <label for="#departamento" class="nf-label">Funcionário:</label>
+                <div id="departamento">{{ isset($ordemServico->funcionario) ? $ordemServico->funcionario : '&nbsp;' }}</div>
             </div>
         </div>
         
