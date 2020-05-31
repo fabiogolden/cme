@@ -16,8 +16,8 @@ class RoleUsersController extends Controller
 {
     public $fields = [
         'id' => 'ID',
-        'display_name' => 'Perfil',
-        'name' => 'Usuário'
+        'name' => 'Usuário',
+        'display_name' => 'Perfil'
     ];
 
     /**
