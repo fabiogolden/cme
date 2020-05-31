@@ -68,8 +68,9 @@ class OrdemServicoController extends Controller
                                 ->leftJoin('ordem_servico_status', 'ordem_servico_status.id', 'ordem_servico_status_id')
                                 ->where('ordem_servicos.id', $request->searchField)
                                 ->whereRaw($whereData)
-                                ->orWhere('clientes.nome_razao', 'like', '%'.$request->searchField.'%')
-                                ->where('departamentos.departamento', 'like', '%'.$request->searchField.'%')
+                                //->orWhere('clientes.nome_razao', 'like', '%'.$request->searchField.'%')
+                                ->orwhere('departamentos.departamento', 'like', '%'.$request->searchField.'%')
+                                ->orwhere('ordem_servicos.funcionario', 'like', '%'.$request->searchField.'%')
                                 ->orderBy('ordem_servicos.id', 'desc')
                                 ->paginate();
             } else {
