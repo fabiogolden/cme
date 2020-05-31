@@ -160,7 +160,7 @@
             <div class="col col-sm-2 col-md-2 col-lg-2">
             </div>
             <div class="col col-sm-4 col-md-4 col-lg-4" align="center">
-                <strong>{{ $ordemServico->departamento->cliente->nome_razao }}</strong> 
+                <strong>{{ $ordemServico->departamento->departamento }}</strong> 
             </div>
         </div>
     </div>

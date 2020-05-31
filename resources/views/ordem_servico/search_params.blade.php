@@ -12,7 +12,7 @@
     'dateTimeFormat' => 'DD/MM/YYYY',
     'picker_begin' => 'data_inicial',
     'picker_end' => 'data_final',
-    'inputValue' => date('d/m/Y')
+    'inputValue' => date('01/m/Y'),
 ])
 @endcomponent
 @component('components.input-datetime', [
@@ -24,21 +24,23 @@
     'dateTimeFormat' => 'DD/MM/YYYY',
     'picker_begin' => 'data_inicial',
     'picker_end' => 'data_final',
-    'inputValue' => date('d/m/Y')
+    'inputValue' => date('t/m/Y'),
     
-])
+]
+)
 @endcomponent
+
 <div class="col-sm-12 col-md-3 col-lg-3">                   
     <div class="form-group">
-        @component('components.label', ['label' => 'Tipo de Abastecimento', 'field' => $abast_local])
+        @component('components.label', ['label' => 'Status da Ordem de Serviços', 'field' => $abast_local])
         @endcomponent
         <div class="input-group">
             <div id="tipo_abastecimento" class="btn-group btn-group-toggle" data-toggle="buttons" >
                 <buttom class="btn btn-secondary {{$abast_local == 1 ? ' active' : ''}}">
-                    <input type="radio" name="abast_local" id="abast_local" value="1"> Local
+                    <input type="radio" name="abast_local" id="abast_local" value="1"> Aberta
                 </buttom>
                 <buttom class="btn btn-secondary {{$abast_local == 0 ? ' active' : ''}}">
-                    <input type="radio" name="abast_local" id="abast_externo" value="0"> Externo
+                    <input type="radio" name="abast_local" id="abast_externo" value="0"> Fechada
                 </buttom>
                 <buttom class="btn btn-secondary {{$abast_local == -1 ? ' active' : ''}}">
                     <input type="radio" name="abast_local" id="abast_todos" value="-1"> Todos
@@ -52,4 +54,5 @@
     $("#tipo_abastecimento :input").change(function() {
         $("#searchForm").submit();
     })
+
 @endpush

@@ -162,6 +162,17 @@
                     @endpermission
                 </ul>
             </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMovimentacao" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   Ordem de Serviços
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMovimentacao">
+                    @permission('listar-ordem-servico')
+                    <li><a class="dropdown-item" href="{{route('ordem_servico.index')}}">Ordens de Serviço</a></li>
+                    @endpermission
+                </ul>
+            </li>
+               
             {{--  Movimentacao  --}}
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMovimentacao" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

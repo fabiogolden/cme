@@ -2,59 +2,9 @@
     <div>
         <div class="container-fluid mt-3">
             <div class="row">
+
                 <div class="col-md-6">
-                    <div class="row mb-3">
-                        <div class="col col-md-6">
-                            <transition name="fade" mode="in-out" appear>
-                                <card-info :card-type="'success'">
-                                    <template slot="card-icon">
-                                        <i class="fas fa-car fa-4x"></i>
-                                    </template>
-                                    <template slot="card-title">Veículos na Frota</template>
-                                    <template slot="card-body">{{ numVeiculosFrota }}</template>
-                                    <template slot="card-footer">
-                                        <a href="/veiculo" class="text-info">
-                                            <i class="fas fa-link"></i> Acessar
-                                        </a>
-                                    </template>
-                                </card-info>
-                            </transition>
-                        </div>
-                        <div class="col col-md-6">
-                            <transition name="fade" mode="in-out" appear>
-                                <card-info :card-type="'primary'">
-                                    <template slot="card-icon">
-                                        <i class="fas fa-gas-pump fa-4x"></i>
-                                    </template>
-                                    <template slot="card-title">Abastecimentos</template>
-                                    <template slot="card-body">{{ numAbastecimentosDia }}</template>
-                                    <template slot="card-footer">
-                                        <a href="/abastecimento" class="text-info">
-                                            <i class="fas fa-link"></i> Acessar
-                                        </a>
-                                    </template>
-                                </card-info>
-                            </transition>
-                        </div>
-                    </div>
                     
-                </div>
-                <div class="col-md-6">
-                    <div class="card bg-light text-dark">
-                        <div class="card-header">Últimas entradas de Combustíveis
-                            <div class="float-right text-info">
-                                <a href="/entrada_tanque">
-                                    <i class="fas fa-link"></i>
-                                    Acessar
-                                </a>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <transition name="fade" mode="in-out" appear>
-                                <ultimas-entradas-comb></ultimas-entradas-comb>
-                            </transition>
-                        </div>
-                    </div>
                     <div class="card bg-light text-dark mt-3">
                         <div class="card-header">Ordens de Serviço em Aberto
                             <div class="float-right text-info">

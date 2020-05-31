@@ -100,11 +100,11 @@ class DashboardController extends Controller
 
     public function osEmAberto() {
         $oss = OrdemServico::with('user')
-        ->with('veiculo')
+        ->with('departamento')
         ->whereHas('ordem_servico_status', function($query) {
             $query->where('em_aberto', true);
         })
-        ->orderBy('created_at', 'asc')
+        ->orderBy('created_at', 'desc')
         ->take(5)
         ->get();
 
@@ -113,7 +113,7 @@ class DashboardController extends Controller
             $daysAgo = (new \Datetime())->diff((new \DateTime($os->created_at)))->format("%a");
             $result[] = [
                 'id' => $os->id,
-                'veiculo' => $os->veiculo->placa,
+                'departamento' => $os->departamento->departamento,
                 'usuario' => $os->user->name ?? '',
                 'dias_em_aberto' => $daysAgo
             ];

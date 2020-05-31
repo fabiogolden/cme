@@ -65,6 +65,8 @@ class AbastecimentoController extends Controller
                 $whereData = '1 = 1'; //busca qualquer coisa
             }
 
+            
+
             if (isset($request->searchField)) {
                 $abastecimentos = DB::table('abastecimentos')
                                     ->select('abastecimentos.*', 'bicos.num_bico', 'veiculos.placa', 'atendentes.nome_atendente')

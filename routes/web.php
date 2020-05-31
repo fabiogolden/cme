@@ -125,10 +125,10 @@ Route::middleware(['auth:web'])->group(function() {
     Route::get('/dashboard/os_em_aberto', 'DashboardController@osEmAberto');
 });
 
-/* Route::get('teste', function() {
-    return View('teste');
+Route::get('teste', function() {
+    return View('index2');
 });
- */
+ 
 /* Route::get('relatorios/abastecimentos/imprimir', 'AbastecimentoController@gerarPdfRelatorioAbastecimentos')->name('imprimir_relatorio_abastecimentos'); */
 /* 
 Route::get('teste', 'IntegracaoAutomacaoController@configFTP')->name('teste');
