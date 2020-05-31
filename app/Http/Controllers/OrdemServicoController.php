@@ -31,7 +31,8 @@ class OrdemServicoController extends Controller
         
         'name' => 'Usuário',
         'created_at' => ['label' => 'Data', 'type' => 'datetime'],
-        'os_status' => 'Status'
+        'os_status' => 'Status',
+        'funcionario' => 'Funcionario'
     ];
     /**
      * Display a listing of the resource.

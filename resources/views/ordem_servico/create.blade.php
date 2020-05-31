@@ -54,6 +54,7 @@
                             'required' => true,
                             'autofocus' => true,
                             'inputSize' => 3,
+                            'css' => 'text-uppercase'
                           
                         ],
                         [
@@ -91,7 +92,8 @@
                         [
                             'type' => 'textarea',
                             'field' => 'obs',
-                            'label' => 'Observações'
+                            'label' => 'Observações',
+                            'css' => 'text-uppercase'
                         ]
                     ]
                 ])

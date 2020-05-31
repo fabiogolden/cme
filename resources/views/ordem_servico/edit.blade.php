@@ -55,6 +55,7 @@
                             'autofocus' => true,
                             'inputSize' => 3,
                             'inputValue' => $ordemServico->funcionario,
+                            'css' => 'text-uppercase'
 
                         ],
                         [
@@ -87,7 +88,8 @@
                             'type' => 'textarea',
                             'field' => 'obs',
                             'label' => 'Observações',
-                            'inputValue' => $ordemServico->obs
+                            'inputValue' => $ordemServico->obs,
+                            'css' => 'text-uppercase'
                         ]
                     ]
                 ])
