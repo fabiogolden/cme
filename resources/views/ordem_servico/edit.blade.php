@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+
 @section('content')
     <div class="card m-0 border-0">
         @component('components.form', [
@@ -47,20 +48,14 @@
                             'inputValue' => $ordemServico->departamento_id
                         ],
                         [
-                            'type' => 'select',
-                            'field' => 'atendente_id_readonly',
-                            'label' => 'Atendente',
-                            'items' => $ordemServico->atendente->get(),
+                            'type' => 'text',
+                            'field' => 'funcionario',
+                            'label' => 'Funcionario',
+                            'required' => true,
+                            'autofocus' => true,
                             'inputSize' => 3,
-                            'displayField' => 'nome_atendente',
-                            'keyField' => 'id',
-                            'disabled' => true,
-                            'indexSelected' => $ordemServico->atendente_id
-                        ],
-                        [
-                            'type' => 'hidden',
-                            'field' => 'atendente_id',
-                            'inputValue' => $ordemServico->atendente_id
+                            'inputValue' => $ordemServico->funcionario,
+
                         ],
                         [
                             'type' => 'select',

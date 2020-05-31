@@ -147,6 +147,7 @@ class OrdemServicoController extends Controller
                 DB::beginTransaction();
 
                 $ordemServico = Auth::user()->ordem_servico()->create($request->all());
+                $ordemServico->atendente_id = null;
 
                //dd($request->all());
 
@@ -280,6 +281,7 @@ class OrdemServicoController extends Controller
      */
     public function update(Request $request, OrdemServico $ordemServico)
     {
+        
         if (Auth::user()->canAlterarOrdemServico()) {
             $this->validate($request, [
                 'cliente_id' => 'required',

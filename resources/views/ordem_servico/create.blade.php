@@ -25,8 +25,10 @@
                             'displayField' => 'nome_razao',
                             'keyField' => 'id',
                             'liveSearch' => true,
-                            //'defaultNone' => true
+                            'defaultNone' => false,
+                            
                         ],
+                        
                         [
                             'type' => 'select',
                             'field' => 'departamento_id',
@@ -44,16 +46,15 @@
                 @component('components.form-group', [
                     'inputs' => [
                         
+                        
                         [
-                            'type' => 'select',
-                            'field' => 'atendente_id',
+                            'type' => 'text',
+                            'field' => 'funcionario',
                             'label' => 'Funcionario',
                             'required' => true,
-                            'items' => $atendentes,
+                            'autofocus' => true,
                             'inputSize' => 3,
-                            'displayField' => 'nome_atendente',
-                            'keyField' => 'id',
-                            'liveSearch' => true,
+                          
                         ],
                         [
                             'type' => 'select',
@@ -63,7 +64,20 @@
                             'items' => $ordemServicoStatus,
                             'displayField' => 'os_status',
                             'keyField' => 'id'
-                        ]
+                        ],
+                        [
+                            'type' => 'select',
+                            'field' => 'atendente_id',
+                            'label' => '-',
+                            'required' => false,
+                            'items' => $atendentes,
+                            'inputSize' => 1,
+                            'displayField' => 'id',
+                            'keyField' => 'id',
+                            'liveSearch' => true,
+                            'inputvalue' => null,
+                            'visible' => false
+                        ],
                     ]
                 ])
                 @endcomponent

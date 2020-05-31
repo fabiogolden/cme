@@ -22,7 +22,8 @@ class OrdemServico extends Model
         'obs', 
         'user_id',
         'valor_total',
-        'ordem_servico_status_id'
+        'ordem_servico_status_id',
+        'funcionario'
     ];
 
     public function departamento() {
