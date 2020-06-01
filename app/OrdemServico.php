@@ -23,7 +23,8 @@ class OrdemServico extends Model
         'user_id',
         'valor_total',
         'ordem_servico_status_id',
-        'funcionario'
+        'funcionario',
+        'funcionario_recolhimento'
     ];
 
     public function departamento() {

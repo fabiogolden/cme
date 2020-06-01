@@ -254,10 +254,10 @@
                     @permission('acesso-relatorio-movimentacao-estoque')
                     <li><a class="dropdown-item" href="{{route('param_relatorio_movimentacao_estoque')}}">Relatório de Movimentação de Estoque - Produtos</a></li>
                     @endpermission
-                  {{--  @permission('acesso-relatorio-ordem-servicos')
+                    @permission('acesso-relatorio-ordem-servicos')
                     <li><a class="dropdown-item" href="{{route('param_relatorio_ordem_servicos')}}" target="_blank">Ordem de Serviços</a></li>
                     @endpermission
-                 {{--
+                
                     {{--  <li><a class="dropdown-item" href="{{route('relatorio_media_consumo')}}">Listagem de Entradas de Combustíveis</a></li>
                     <li><a class="dropdown-item" href="{{route('relatorio_media_consumo')}}">Listagem de Entradas de Abastecimentos</a></li>  --}}
                     {{--  <li><a class="dropdown-item" href="#">Vendas de Produtos</a></li>  --}}

@@ -43,10 +43,16 @@
                 <div id="departamento">{{ isset($ordemServico->departamento_id) ? $ordemServico->departamento->departamento : '&nbsp;' }}</div>
             </div>
         </div>
-        <div class="col col-sm-3 col-md-3 col-lg-3">
+        <div class="col col-sm-2 col-md-2 col-lg-2">
             <div class="card nf-panel">
                 <label for="#departamento" class="nf-label">Funcionário:</label>
-                <div id="departamento">{{ isset($ordemServico->funcionario) ? $ordemServico->funcionario : '&nbsp;' }}</div>
+                <div id="departamento">{{ isset($ordemServico->funcionario) ? $ordemServico->funcionario : 'NÃO INFORMADO' }}</div>
+            </div>
+        </div>
+        <div class="col col-sm-2 col-md-2 col-lg-2">
+            <div class="card nf-panel">
+                <label for="#departamento" class="nf-label">Funcionário Recolhimento:</label>
+                <div id="departamento">{{ isset($ordemServico->funcionario_recolhimento) ? $ordemServico->funcionario_recolhimento: 'NÃO INFORMADO' }}</div>
             </div>
         </div>
         

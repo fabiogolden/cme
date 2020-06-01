@@ -40,9 +40,9 @@
                             <td>Data/Hora Fechamento</td>
                             <td align="left">Número</td>
                             <td align="right"></td>
-                            <td align="right">Placa / Veículo</td>
-                            <td align="right">Odômetro / Horímetro</td>
-                            <td align="right">Valor</td>
+                            <td align="right">Funcionario</td>
+                            <td align="right">--</td>
+                            <td align="right">--</td>
                                                    
                             
                         </thead>
@@ -62,9 +62,9 @@
                               @endif
                                 <td align="left"> {{$ordemservico->id}} </td>
                                 <td align="right"></td>
-                                <td align="right"> {{$ordemservico->placa}} </td>
-                                <td align="right">{{number_format($ordemservico->km_veiculo,0, ',', '.')}} </td>
-                                <td align="right">R$ {{number_format($ordemservico->valor_total,2, ',', '.')}} </td>
+                                <td align="right"> {{$ordemservico->funcionario}} </td>
+                                <td align="right"> </td>
+                                <td align="right"> </td>
                                 
                             </tr>
                             @endforeach
@@ -74,7 +74,7 @@
                                 <td align="right"></td>
                                 <td align="right"></td>
                                 <td align="right"></td>
-                                <td align="right"><h6><b>R$ {{number_format($valorDepartamento,2, ',', '.')}}</b></h6> </td>
+                                <td align="right"><h6><b></b></h6> </td>
                                 
                             </tr>
                         </tbody>
@@ -91,7 +91,7 @@
         <tr class="default">
             <td><h5>Total Geral</h5></td>
             <td align="right"><h5></h5></td>
-            <td align="right"><h5>Valor Total R$: {{number_format($valortotal, 2, ',', '.')}}</h5></td>
+            <td align="right"><h5></h5></td>
 
         </tr>
     </tbody>

@@ -32,7 +32,8 @@ class OrdemServicoController extends Controller
         'name' => 'Usuário',
         'created_at' => ['label' => 'Data', 'type' => 'datetime'],
         'os_status' => 'Status',
-        'funcionario' => 'Funcionario'
+        'funcionario' => 'Funcionario Entrega',
+        'funcionario_recolhimento' => 'Funcionario Recolhimento'
     ];
     /**
      * Display a listing of the resource.
@@ -391,13 +392,8 @@ class OrdemServicoController extends Controller
      // parametros do relatorio de ordem de servicos
      public function paramRelatorioOrdemServicos() {
         $clientes = Cliente::all();
-        $veiculos = Veiculo::select(DB::raw("concat(veiculos.placa, ' - ', marca_veiculos.marca_veiculo, ' ', modelo_veiculos.modelo_veiculo) as veiculo"), 'veiculos.id')
-                                ->join('modelo_veiculos', 'modelo_veiculos.id', 'veiculos.modelo_veiculo_id')
-                                ->join('marca_veiculos', 'marca_veiculos.id', 'modelo_veiculos.marca_veiculo_id')
-                                ->where('veiculos.ativo', true)
-                                ->get();
-        
-        return View('relatorios.ordem_servicos.param_relatorio_ordem_servicos')->withClientes($clientes)->withVeiculos($veiculos);
+            
+        return View('relatorios.ordem_servicos.param_relatorio_ordem_servicos')->withClientes($clientes);
     }
 
     public function RelatorioOrdemServicos(Request $request) {
@@ -435,21 +431,9 @@ class OrdemServicoController extends Controller
 
     $cliente_id = $request->cliente_id;
     $departamento_id = $request->departamento_id;
-    $veiculo_id = $request->veiculo_id;
+    //$veiculo_id = $request->veiculo_id;
 
-    if ($veiculo_id > 0) {
-        $whereParam = 'veiculos.id = '. $veiculo_id;
-    } else {
-        if ($departamento_id > 0) {
-            $whereParam = 'veiculos.departamento_id = '. $departamento_id;
-        } else {
-            if ($cliente_id > 0) {
-                $whereParam = 'veiculos.cliente_id = '. $cliente_id;
-            } else {
-                $whereParam = '1 = 1';
-            }
-        }
-    }
+    
 
     if ($cliente_id > 0) {
         array_push($parametros, 'Cliente: ' . Cliente::find($cliente_id)->nome_razao);
@@ -459,26 +443,19 @@ class OrdemServicoController extends Controller
         array_push($parametros, 'Departamento: ' . Departamento::find($departamento_id)->departamento);
     }
 
-    if ($veiculo_id > 0) {
-        $veiculo_param = Veiculo::select('veiculos.*', 'marca_veiculos.marca_veiculo', 'modelo_veiculos.modelo_veiculo')
-                    ->join('modelo_veiculos', 'modelo_veiculos.id', 'veiculos.modelo_veiculo_id')
-                    ->join('marca_veiculos', 'marca_veiculos.id', 'modelo_veiculos.marca_veiculo_id')
-                    ->where([
-                        ['veiculos.id', '=', $veiculo_id]
-                    ])->first();
-        array_push($parametros, 'Veiculo: ' . $veiculo_param->placa . ' - ' . $veiculo_param->marca_veiculo . ' ' . $veiculo_param->modelo_veiculo);
-    }
+    
 
     $clientes = DB::table('ordem_servicos')
             ->select('clientes.*')
-            ->leftJoin('veiculos', 'veiculos.id', 'ordem_servicos.veiculo_id')
+            //->leftJoin('veiculos', 'veiculos.id', 'ordem_servicos.veiculo_id')
             ->leftJoin('roles', 'roles.id', 'ordem_servicos.user_id')
-            ->leftJoin('clientes', 'clientes.id', 'veiculos.cliente_id')
-            ->leftJoin('departamentos', 'departamentos.id', 'veiculos.departamento_id')
+            ->leftJoin('departamentos', 'departamentos.id', 'ordem_servicos.departamento_id')
+            ->leftJoin('clientes', 'clientes.id', 'departamentos.cliente_id')
+            
             ->whereRaw('clientes.id is not null')
             ->whereRaw('((ordem_servicos.ordem_servico_status_id = '.(isset($request->ordem_servico_status_id) ? $request->ordem_servico_status_id : -1).') or ('.(isset($request->ordem_servico_status_id) ? $request->ordem_servico_status_id : -1).' = -1))')
             ->whereRaw($whereData)
-            ->whereRaw($whereParam)
+            //->whereRaw($whereParam)
             //->whereRaw($whereTipoAbastecimento)
             ->orderBy('clientes.nome_razao', 'asc')
             ->distinct()
@@ -490,13 +467,14 @@ class OrdemServicoController extends Controller
         foreach($clientes as $cliente) {
             $departamentos = DB::table('ordem_servicos')
                     ->select('departamentos.*')
-                    ->leftJoin('veiculos', 'veiculos.id', 'ordem_servicos.veiculo_id')
-                    ->leftJoin('clientes',         'clientes.id', 'veiculos.cliente_id')
-                    ->leftJoin('departamentos', 'departamentos.id', 'veiculos.departamento_id')
+                   // ->leftJoin('veiculos', 'veiculos.id', 'ordem_servicos.veiculo_id')
+                    
+                    ->leftJoin('departamentos', 'departamentos.id', 'ordem_servicos.departamento_id')
+                    ->leftJoin('clientes','clientes.id', 'departamentos.cliente_id')
                     ->where('clientes.id',$cliente->id)
                     ->whereRaw('((ordem_servicos.ordem_servico_status_id = '.(isset($request->ordem_servico_status_id) ? $request->ordem_servico_status_id : -1).') or ('.(isset($request->ordem_servico_status_id) ? $request->ordem_servico_status_id : -1).' = -1))')
                     ->whereRaw($whereData)
-                    ->whereRaw($whereParam)
+                   // ->whereRaw($whereParam)
                     //->whereRaw($whereTipoAbastecimento)
                     ->orderBy('departamentos.departamento', 'asc')
                     ->distinct()
@@ -505,14 +483,15 @@ class OrdemServicoController extends Controller
            //dd($cliente->departamentos);
             foreach($cliente->departamentos as $departamento) {
                 $ordemservicos = DB::table('ordem_servicos')
-                        ->select('veiculos.placa','ordem_servicos.*')
-                        ->leftJoin('veiculos', 'veiculos.id', 'ordem_servicos.veiculo_id')
-                        ->leftJoin('clientes', 'clientes.id', 'veiculos.cliente_id')
-                        ->leftJoin('departamentos', 'departamentos.id', 'veiculos.departamento_id')
+                        ->select('ordem_servicos.*')
+                       // ->leftJoin('veiculos', 'veiculos.id', 'ordem_servicos.veiculo_id')
+                       // ->leftJoin('clientes', 'clientes.id', 'veiculos.cliente_id')
+                        ->leftJoin('departamentos', 'departamentos.id', 'ordem_servicos.departamento_id')
+                        ->leftJoin('clientes', 'clientes.id', 'departamentos.cliente_id')
                         ->whereRaw('clientes.id is not null')
                         ->whereRaw('((ordem_servicos.ordem_servico_status_id = '.(isset($request->ordem_servico_status_id) ? $request->ordem_servico_status_id : -1).') or ('.(isset($request->ordem_servico_status_id) ? $request->ordem_servico_status_id : -1).' = -1))')
                         ->whereRaw($whereData)
-                        ->whereRaw($whereParam)
+                        //->whereRaw($whereParam)
                         //->whereRaw($whereTipoAbastecimento)
                         ->where('departamentos.id', $departamento->id)
                         ->orderby('ordem_servicos.created_at')
@@ -531,9 +510,9 @@ class OrdemServicoController extends Controller
         foreach($clientes as $cliente) {
             $departamentos = DB::table('ordem_servicos')
                     ->select('departamentos.*')
-                    ->leftJoin('veiculos', 'veiculos.id', 'ordem_servicos.veiculo_id')
-                    ->leftJoin('clientes',         'clientes.id', 'veiculos.cliente_id')
-                    ->leftJoin('departamentos', 'departamentos.id', 'veiculos.departamento_id')
+                  //  ->leftJoin('veiculos', 'veiculos.id', 'ordem_servicos.veiculo_id')
+                //    ->leftJoin('clientes',         'clientes.id', 'veiculos.cliente_id')
+                    ->leftJoin('departamentos', 'departamentos.id', 'ordem_servicos.departamento_id')
                     ->where('clientes.id',$cliente->id)
                     ->whereRaw('((ordem_servicos.ordem_servico_status_id = '.(isset($request->ordem_servico_status_id) ? $request->ordem_servico_status_id : -1).') or ('.(isset($request->ordem_servico_status_id) ? $request->ordem_servico_status_id : -1).' = -1))')
                     ->whereRaw($whereData)
@@ -546,10 +525,11 @@ class OrdemServicoController extends Controller
            
             foreach($cliente->departamentos as $departamento) {
                 $ordemservicos = DB::table('ordem_servicos')
-                        ->select('veiculos.placa','ordem_servicos.*')
-                        ->leftJoin('veiculos', 'veiculos.id', 'ordem_servicos.veiculo_id')
-                        ->leftJoin('clientes', 'clientes.id', 'veiculos.cliente_id')
-                        ->leftJoin('departamentos', 'departamentos.id', 'veiculos.departamento_id')
+                        ->select('ordem_servicos.*')
+                        //->leftJoin('veiculos', 'veiculos.id', 'ordem_servicos.veiculo_id')
+                        
+                        ->leftJoin('departamentos', 'departamentos.id', 'ordem_servicos.departamento_id')
+                        ->leftJoin('clientes', 'clientes.id', 'departamentos.cliente_id')
                         ->whereRaw('clientes.id is not null')
                         ->whereRaw('((ordem_servicos.ordem_servico_status_id = '.(isset($request->ordem_servico_status_id) ? $request->ordem_servico_status_id : -1).') or ('.(isset($request->ordem_servico_status_id) ? $request->ordem_servico_status_id : -1).' = -1))')
                         ->whereRaw($whereData)
@@ -571,9 +551,9 @@ class OrdemServicoController extends Controller
                                 'ordem_servico_produto.valor_desconto','ordem_servico_produto.valor_acrescimo','ordem_servico_produto.valor_cobrado')
                         ->leftJoin('produtos', 'produtos.id', 'ordem_servico_produto.produto_id')
                         ->leftJoin('ordem_servicos', 'ordem_servicos.id', 'ordem_servico_produto.ordem_servico_id')
-                        ->leftJoin('veiculos', 'veiculos.id', 'ordem_servicos.veiculo_id')
+                        //->leftJoin('veiculos', 'veiculos.id', 'ordem_servicos.veiculo_id')
                         ->leftJoin('clientes', 'clientes.id', 'veiculos.cliente_id')
-                        ->leftJoin('departamentos', 'departamentos.id', 'veiculos.departamento_id')
+                        ->leftJoin('departamentos', 'departamentos.id', 'ordem_servicos.departamento_id')
 
                         //->leftJoin('departamentos', 'departamentos.id', 'veiculos.departamento_id')
                        // ->whereRaw('clientes.id is not null')
@@ -598,9 +578,9 @@ class OrdemServicoController extends Controller
                                     'ordem_servico_servico.valor_desconto','ordem_servico_servico.valor_acrescimo','ordem_servico_servico.valor_cobrado')
                             ->leftJoin('servicos', 'servicos.id', 'ordem_servico_servico.servico_id')
                             ->leftJoin('ordem_servicos', 'ordem_servicos.id', 'ordem_servico_servico.ordem_servico_id')
-                            ->leftJoin('veiculos', 'veiculos.id', 'ordem_servicos.veiculo_id')
+                           // ->leftJoin('veiculos', 'veiculos.id', 'ordem_servicos.veiculo_id')
                             ->leftJoin('clientes', 'clientes.id', 'veiculos.cliente_id')
-                            ->leftJoin('departamentos', 'departamentos.id', 'veiculos.departamento_id')
+                            ->leftJoin('departamentos', 'departamentos.id', 'ordem_servicos.departamento_id')
     
                             //->leftJoin('departamentos', 'departamentos.id', 'veiculos.departamento_id')
                            // ->whereRaw('clientes.id is not null')

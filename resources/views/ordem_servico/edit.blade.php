@@ -68,6 +68,17 @@
                             'keyField' => 'id',
                             'disabled' => (!$ordemServico->ordem_servico_status->em_aberto),
                             'indexSelected' => $ordemServico->ordem_servico_status_id
+                        ],
+                        [
+                            'type' => 'text',
+                            'field' => 'funcionario_recolhimento',
+                            'label' => 'Funcionario Recolhimento',
+                            'required' => true,
+                            'autofocus' => true,
+                            'inputSize' => 3,
+                            'inputValue' => $ordemServico->funcionario_recolhimento,
+                            'css' => 'text-uppercase'
+
                         ]
                     ]
                 ])

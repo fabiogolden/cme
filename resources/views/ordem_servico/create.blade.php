@@ -32,7 +32,7 @@
                         [
                             'type' => 'select',
                             'field' => 'departamento_id',
-                            'label' => 'Departamento',
+                            'label' => 'Setor',
                             'required' => true,
                             'items' => $departamentos,
                             'inputSize' => 3,
@@ -50,7 +50,7 @@
                         [
                             'type' => 'text',
                             'field' => 'funcionario',
-                            'label' => 'Funcionario',
+                            'label' => 'Funcionario Entrega',
                             'required' => true,
                             'autofocus' => true,
                             'inputSize' => 3,
@@ -79,6 +79,16 @@
                             'inputvalue' => null,
                             'visible' => false
                         ],
+                        [
+                            'type' => 'text',
+                            'field' => 'funcionario_recolhimento',
+                            'label' => 'Funcionario Recolhimento',
+                            'required' => true,
+                            'autofocus' => true,
+                            'inputSize' => 3,
+                            'css' => 'text-uppercase'
+                          
+                        ]
                     ]
                 ])
                 @endcomponent
